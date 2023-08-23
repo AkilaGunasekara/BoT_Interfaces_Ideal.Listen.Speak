@@ -1,4 +1,5 @@
 import tkinter as tk
+import threading
 from tkVideoPlayer import TkinterVideo
 
 # Video paths
@@ -22,23 +23,19 @@ def play_video(video_path):
     video_player.pack(expand=True, fill="both")
     video_player.play()
 
+def play_videos():
+    while True:
+        play_video(video1)
+        play_video(video2)
+        play_video(video3)
+
 # Create a GUI window
 root = tk.Tk()
 root.geometry("600x600")
 root.title("Video Player")
 
-# Create a frame to hold the buttons
-button_frame = tk.Frame(root)
-button_frame.pack(pady=20)
-
-btn1 = tk.Button(button_frame, text="Ideal", command=lambda: play_video(video1))
-btn1.pack(side=tk.LEFT, padx=10)
-
-btn2 = tk.Button(button_frame, text="Speak", command=lambda: play_video(video2))
-btn2.pack(side=tk.LEFT, padx=10)
-
-btn3 = tk.Button(button_frame, text="Listen", command=lambda: play_video(video3))
-btn3.pack(side=tk.LEFT, padx=10)
+# Start playing videos in a separate thread
+video_thread = threading.Thread(target=play_videos)
+video_thread.start()
 
 root.mainloop()
-
